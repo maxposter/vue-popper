@@ -2,11 +2,24 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('popper.js')) :
   typeof define === 'function' && define.amd ? define(['popper.js'], factory) :
   (global = global || self, global.VuePopper = factory(global.Popper));
-}(this, function (Popper) { 'use strict';
+}(this, (function (Popper) { 'use strict';
 
-  Popper = Popper && Popper.hasOwnProperty('default') ? Popper['default'] : Popper;
+  Popper = Popper && Object.prototype.hasOwnProperty.call(Popper, 'default') ? Popper['default'] : Popper;
 
   //
+
+  (function (ELEMENT) {
+    ELEMENT.matches = ELEMENT.matches || ELEMENT.mozMatchesSelector || ELEMENT.msMatchesSelector || ELEMENT.oMatchesSelector || ELEMENT.webkitMatchesSelector;
+
+    ELEMENT.closest = ELEMENT.closest || function closest(selector) {
+      if (!this) return null;
+      if (this.matches(selector)) return this;
+
+      if (!this.parentElement) {
+        return null;
+      } else return this.parentElement.closest(selector);
+    };
+  })(Element.prototype);
 
   function on(element, event, handler) {
     if (element && event && handler) {
@@ -223,7 +236,7 @@
           }
 
           if (_this.boundariesSelector) {
-            var boundariesElement = document.querySelector(_this.boundariesSelector);
+            var boundariesElement = _this.popper.closest(_this.boundariesSelector);
 
             if (boundariesElement) {
               _this.popperOptions.modifiers = Object.assign({}, _this.popperOptions.modifiers);
@@ -395,7 +408,7 @@
   /* script */
   const __vue_script__ = script;
   // For security concerns, we use only base name in production mode. See https://github.com/vuejs/rollup-plugin-vue/issues/258
-  script.__file = "/Users/user/projects/vue-popper/src/component/popper.js.vue";
+  script.__file = "/Users/nikpachoo/projects/vue-popper/src/component/popper.js.vue";
   /* template */
   var __vue_render__ = function() {
     var _vm = this;
@@ -471,4 +484,4 @@
 
   return VuePopper;
 
-}));
+})));

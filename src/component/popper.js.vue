@@ -95,6 +95,17 @@
 <script>
   import Popper from 'popper.js';
 
+  // closest polyfill
+  (function(ELEMENT) {
+    ELEMENT.matches = ELEMENT.matches || ELEMENT.mozMatchesSelector || ELEMENT.msMatchesSelector || ELEMENT.oMatchesSelector || ELEMENT.webkitMatchesSelector;
+    ELEMENT.closest = ELEMENT.closest || function closest(selector) {
+      if (!this) return null;
+      if (this.matches(selector)) return this;
+      if (!this.parentElement) {return null}
+      else return this.parentElement.closest(selector)
+    };
+  }(Element.prototype));
+
   function on(element, event, handler) {
     if (element && event && handler) {
       document.addEventListener ? element.addEventListener(event, handler, false) : element.attachEvent('on' + event, handler);
@@ -315,7 +326,7 @@
           }
 
           if (this.boundariesSelector) {
-            const boundariesElement = document.querySelector(this.boundariesSelector);
+            const boundariesElement = this.popper.closest(this.boundariesSelector);
 
             if (boundariesElement) {
               this.popperOptions.modifiers = Object.assign({}, this.popperOptions.modifiers);
