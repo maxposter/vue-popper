@@ -236,7 +236,7 @@
           }
 
           if (_this.boundariesSelector) {
-            var boundariesElement = _this.popper.closest(_this.boundariesSelector);
+            var boundariesElement = _this.referenceElm.closest(_this.boundariesSelector);
 
             if (boundariesElement) {
               _this.popperOptions.modifiers = Object.assign({}, _this.popperOptions.modifiers);
